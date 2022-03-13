@@ -1,0 +1,37 @@
+[
+    {
+        "name": "get_object",
+        "args": ["container", "file_path"],
+        "direction": "in"
+    },
+    {
+        "name": "put_object",
+        "args": ["container", "file_path", "data"],
+        "direction": "out"
+    },
+    {
+        "name": "delete_object",
+        "args": ["container", "file_path"],
+        "direction": "out"
+    },
+    {
+        "name": "list_objects",
+        "args": [],
+        "direction": "in"
+    },
+    {
+        "name": "create_container",
+        "args": ["name"],
+        "direction": "in"
+    },
+    {
+        "name": "delete_container",
+        "args": ["name"],
+        "direction": "out"
+    },
+    {
+        "name": "list_containers",
+        "args": [],
+        "direction": "in"
+    }
+]

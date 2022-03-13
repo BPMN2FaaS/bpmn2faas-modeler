@@ -1,0 +1,243 @@
+{
+  "name": "BPMN2FaaS",
+  "prefix": "bpmn2faas",
+  "uri": "http://bpmn2faas",
+  "xml": {
+    "tagAlias": "lowerCase"
+  },
+  "associations": [],
+  "types": [
+    {
+      "name": "FaaSFunction",
+      "extends": [
+        "bpmn:Lane"
+      ],
+      "properties": [
+        {
+          "name": "handler",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "MaToSWoProcess",
+      "extends": [
+        "bpmn:Process"
+      ],
+      "properties": [
+        {
+          "name": "awsAccountId",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "awsAccountRegion",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "FaaSExclusiveGateway",
+      "extends": [
+        "bpmn:ExclusiveGateway"
+      ],
+      "properties": [
+        {
+          "name": "condition",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "mode",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "FaaSSequenceFlow",
+      "extends": [
+        "bpmn:SequenceFlow"
+      ],
+      "properties": [
+        {
+          "name": "case",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "defaultBranch",
+          "isAttr": true,
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "MaToSWoParallelGateway",
+      "extends": [
+        "bpmn:ParallelGateway"
+      ],
+      "properties": [
+        {
+          "name": "inputSchema",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "outputSchema",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "MaTosWoIntermediateCatchEventTimer",
+      "extends": [
+        "bpmn:IntermediateCatchEvent"
+      ],
+      "properties": [
+        {
+          "name": "milliseconds",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "inputSchema",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "FaaSDataStorage",
+      "extends": [
+        "bpmn:DataStoreReference"
+      ],
+      "properties": [
+        {
+          "name": "service",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "cloudProvider",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "region",
+          "isAttr": true,
+          "type": "region"
+        }
+      ]
+    },
+    {
+      "name": "FaaSDataAssociation",
+      "extends": [
+        "bpmn:DataInputAssociation",
+        "bpmn:DataOutputAssociation"
+      ],
+      "properties": [
+        {
+          "name": "containerName",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "FaaSStartEvent",
+      "extends": [
+        "bpmn:StartEvent"
+      ],
+      "properties": [
+        {
+          "name": "schedule",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "trigger",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "FaaSTask",
+      "extends": [
+        "bpmn:Task"
+      ],
+      "properties": [
+        {
+          "name": "function",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "arg1",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "arg2",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "arg3",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "arg4",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "arg5",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "toggleSwitch",
+          "isAttr": true,
+          "type": "Boolean"
+        },
+        {
+          "name": "for",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "forEach",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "FaaSServiceTask",
+      "extends": [
+        "bpmn:ServiceTask"
+      ],
+      "properties": [
+        {
+          "name": "serviceCall",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "Queue",
+      "properties": [
+        { "name": "id", "type": "String", "isAttr": true },
+        { "name": "endpoint", "type": "String", "isAttr": true},
+        { "name": "type", "type": "String", "isAttr": true }
+      ]
+    }
+  ]
+}

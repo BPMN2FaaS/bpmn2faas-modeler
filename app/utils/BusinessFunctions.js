@@ -1,0 +1,4 @@
+
+class BusinessFunctions {
+    static input;
+}
