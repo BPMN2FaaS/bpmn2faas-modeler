@@ -54,7 +54,7 @@ export default function(group, element, translate) {
                             }));
 
                             if (element.businessObject.$attrs['advancedInput' + (i+1)]) {
-                                group.entries.push(entryFactory.textField(translate, {
+                                group.entries.push(entryFactory.textBox(translate, {
                                     id : 'arg' + (i+1) + ' (advanced)',
                                     description : 'Specify the argument <' + func.args[i] + '>',
                                     label : 'Argument ' + (i+1),
