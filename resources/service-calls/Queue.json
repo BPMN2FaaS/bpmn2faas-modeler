@@ -1,0 +1,32 @@
+[
+    {
+        "name": "send_message",
+        "args": ["queue_name", "message"],
+        "direction": "out"
+    },
+    {
+        "name": "receive_message",
+        "args": ["queue_name"],
+        "direction": "in"
+    },
+    {
+        "name": "list_queues",
+        "args": ["queue_name_prefix"],
+        "direction": "in"
+    },
+    {
+        "name": "create_queue",
+        "args": ["queue_name"],
+        "direction": "out"
+    },
+    {
+        "name": "delete_queue",
+        "args": ["queue_name"],
+        "direction": "out"
+    },
+    {
+        "name": "clear_queue",
+        "args": ["queue_name"],
+        "direction": "out"
+    }
+]

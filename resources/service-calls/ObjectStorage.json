@@ -22,7 +22,7 @@
     {
         "name": "create_container",
         "args": ["name"],
-        "direction": "in"
+        "direction": "out"
     },
     {
         "name": "delete_container",

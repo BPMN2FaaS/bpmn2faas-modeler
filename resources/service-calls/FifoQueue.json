@@ -1,0 +1,27 @@
+[
+    {
+        "name": "send_message",
+        "args": ["queue_name", "message", "deduplication_id", "group_id"],
+        "direction": "out"
+    },
+    {
+        "name": "receive_message",
+        "args": ["queue_name"],
+        "direction": "in"
+    },
+    {
+        "name": "list_queues",
+        "args": [],
+        "direction": "in"
+    },
+    {
+        "name": "create_queue",
+        "args": ["queue_name"],
+        "direction": "out"
+    },
+    {
+        "name": "delete_queue",
+        "args": ["queue_name"],
+        "direction": "out"
+    }
+]

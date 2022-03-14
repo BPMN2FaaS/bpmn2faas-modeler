@@ -225,6 +225,15 @@
       ],
       "properties": [
         {
+          "name": "service",
+          "isAttr": true,
+          "type": "String"
+        },{
+          "name": "fifo",
+          "isAttr": true,
+          "type": "Boolean"
+        },
+        {
           "name": "serviceCall",
           "isAttr": true,
           "type": "String"

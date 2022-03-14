@@ -87,7 +87,7 @@ export function getArgs(element) {
         const eventSchema = EventSchemaManager.getEventProperties(triggerType);
 
         for (const [property, type] of Object.entries(eventSchema)) {
-            args.push({value: property, name: 'Event['+property+']'});
+            args.push({value: 'Event['+property+']', name: 'Event['+property+']'});
         }
     }
 

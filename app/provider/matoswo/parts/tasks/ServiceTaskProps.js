@@ -67,8 +67,8 @@ export default function(group, element, translate) {
             defaultText : 'Choose Service...',
             selectOptions: [ 
                                 { label: 'Application Service', entries: [ 
-                                    { name: 'Queuing Services', value: ServiceConstants.queue }, 
-                                    { name: 'Notification Services', value: ServiceConstants.notification } ] 
+                                    { name: 'Queuing Service', value: ServiceConstants.queue }, 
+                                    { name: 'Notification Service', value: ServiceConstants.notification } ] 
                                 } 
                             ],
             modelProperty : 'service'
@@ -76,6 +76,17 @@ export default function(group, element, translate) {
 
         if (element.businessObject.service) {
             serviceCalls = ServiceCallManager.getServiceCalls(element.businessObject.service);
+            if (element.businessObject.service === ServiceConstants.queue) {
+                group.entries.push(entryFactory.checkbox(translate, {
+                    id : 'fifo',
+                    label : 'FIFO',
+                    modelProperty : 'fifo'
+                }));
+
+                if (element.businessObject.fifo) serviceCalls = serviceCalls.fifo;
+                else serviceCalls = serviceCalls.standard;
+            } else delete element.businessObject.fifo;
+
             for (let serviceCall of serviceCalls) {
                 serviceCall.value = serviceCall.name;
             }
