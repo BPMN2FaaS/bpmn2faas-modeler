@@ -60,6 +60,13 @@ export default function(group, element, translate) {
     if (!db) {
         if (element.businessObject.service === ServiceConstants.objectStorage) delete element.businessObject.service;
         
+        let onChange = function () {
+            delete element.businessObject.serviceCall;
+            delete element.businessObject.fifo;
+            for (let i = 0; i <= 5; i++) delete element.businessObject['arg'+i];
+            console.log('working');
+        }
+
         group.entries.push(myEntryFactory.groupedSelectBox(translate, {
             id : 'service',
             description : 'Specify Type of the Service',
@@ -67,24 +74,38 @@ export default function(group, element, translate) {
             defaultText : 'Choose Service...',
             selectOptions: [ 
                                 { label: 'Application Service', entries: [ 
-                                    { name: 'Queuing Service', value: ServiceConstants.queue }, 
-                                    { name: 'Notification Service', value: ServiceConstants.notification } ] 
+                                    { name: 'Queuing Service', value: ServiceConstants.queue },
+                                    { name: 'Queuing Service', value: ServiceConstants.objectStorage },
+                                    /*{ name: 'Notification Service', value: ServiceConstants.notification }*/ ] 
                                 } 
                             ],
+            onChange: onChange,
             modelProperty : 'service'
         }));
 
         if (element.businessObject.service) {
             serviceCalls = ServiceCallManager.getServiceCalls(element.businessObject.service);
             if (element.businessObject.service === ServiceConstants.queue) {
-                group.entries.push(entryFactory.checkbox(translate, {
+                if (element.businessObject.fifo === undefined) element.businessObject.fifo = false;
+                if (element.businessObject.fifo) serviceCalls = serviceCalls.fifo;
+                else serviceCalls = serviceCalls.standard
+
+                let onClick = function (checked) {
+                    delete element.businessObject.serviceCall;
+                    for (let i = 1; i <= 5; i++) delete element.businessObject['arg'+1];
+                    serviceCalls = ServiceCallManager.getServiceCalls(element.businessObject.service);
+                    if (checked) serviceCalls = serviceCalls.fifo;
+                    else serviceCalls = serviceCalls.standard;
+                    console.log('fifo deleted');
+                }
+
+                group.entries.push(myEntryFactory.checkbox(translate, {
                     id : 'fifo',
                     label : 'FIFO',
+                    onClick: onClick,
                     modelProperty : 'fifo'
                 }));
-
-                if (element.businessObject.fifo) serviceCalls = serviceCalls.fifo;
-                else serviceCalls = serviceCalls.standard;
+;
             } else delete element.businessObject.fifo;
 
             for (let serviceCall of serviceCalls) {
@@ -97,7 +118,7 @@ export default function(group, element, translate) {
         createLoopProps(group, element, translate);
 
         group.entries.push(myEntryFactory.selectBox(translate, {
-            id : 'serviceCall',
+            id : 'serviceCall'+(element.businessObject.fifo ? 'fifo' : ''),
             description : 'Choose the Service Function',
             label : 'Service Function',
             defaultText : 'Choose Function...',

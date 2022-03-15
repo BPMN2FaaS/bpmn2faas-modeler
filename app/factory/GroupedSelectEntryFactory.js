@@ -42,6 +42,7 @@ var groupedSelectbox = function(translate, options, defaultParameters) {
       selectOptions = options.selectOptions || [ { name: '', value: '' } ],
       modelProperty = options.modelProperty,
       emptyParameter = options.emptyParameter,
+      onChange = !!options.onChange && typeof options.onChange === 'function',
       canBeDisabled = !!options.disabled && typeof options.disabled === 'function',
       canBeHidden = !!options.hidden && typeof options.hidden === 'function',
       description = options.description;
@@ -59,6 +60,7 @@ var groupedSelectbox = function(translate, options, defaultParameters) {
     '>' + escapeHTML(label) + '</label>' +
     '<select id="camunda-' + escapeHTML(resource.id) + '-select" name="' +
     escapeHTML(modelProperty) + '"' +
+    (onChange ? ' onchange="onChange()" ' : '')  +
     (canBeDisabled ? 'data-disable="isDisabled" ' : '') +
     (canBeHidden ? 'data-show="isHidden" ' : '') +
     ' data-value></select>');
@@ -124,6 +126,12 @@ var groupedSelectbox = function(translate, options, defaultParameters) {
     }
 
   };
+
+  if (onChange) {
+    select.onChange = function () {
+      return options.onChange.apply(resource, arguments);
+    };
+  }
 
   if (canBeDisabled) {
     resource.isDisabled = function() {

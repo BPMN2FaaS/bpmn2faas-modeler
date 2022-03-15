@@ -4,7 +4,7 @@ import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
 
 // input entities
 import textInputField from 'bpmn-js-properties-panel/lib/factory/TextInputEntryFactory';
-import checkboxField from 'bpmn-js-properties-panel/lib/factory/CheckboxEntryFactory';
+import checkboxField from './CheckboxEntryFactory';
 import selectBoxField from './SelectEntryFactory';
 import groupedSelectBoxField from './GroupedSelectEntryFactory';
 import comboBoxField from 'bpmn-js-properties-panel/lib/factory/ComboEntryFactory';
