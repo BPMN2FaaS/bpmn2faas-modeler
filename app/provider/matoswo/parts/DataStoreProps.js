@@ -3,7 +3,7 @@ import myEntryFactory from '../../../factory/CustomEntryFactory';
 
 import {is} from 'bpmn-js/lib/util/ModelUtil';
 
-import { ServiceConstants } from '../../../constants/ServiceConstants';
+import { ServiceTypeConstants } from '../../../constants/ServiceTypeConstants';
 
 
 export default function(group, element, translate) {
@@ -15,11 +15,11 @@ export default function(group, element, translate) {
             label : 'Cloud Service',
             defaultText : 'Choose Service...',
             selectOptions: [{ label: 'Storage', entries: [ 
-                                { name: 'Object Storage', value: ServiceConstants.objectStorage } ] 
+                                { name: 'Object Storage', value: ServiceTypeConstants.objectStorage } ] 
                             }, 
-                            { label: 'Database', entries: [ 
-                                { name: 'NoSQL Database', value: ServiceConstants.noSQLDB } ]
-                            }
+                            /*{ label: 'Database', entries: [ 
+                                { name: 'Document Store', value: ServiceTypeConstants.documentStore } ]
+                            }*/
                             ],
             modelProperty : 'service'
         }));

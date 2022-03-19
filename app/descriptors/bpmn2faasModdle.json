@@ -162,6 +162,11 @@
           "name": "trigger",
           "isAttr": true,
           "type": "String"
+        },
+        {
+          "name": "fifo",
+          "isAttr": true,
+          "type": "Boolean"
         }
       ]
     },

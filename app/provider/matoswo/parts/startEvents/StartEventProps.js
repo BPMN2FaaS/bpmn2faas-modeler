@@ -1,7 +1,7 @@
 import entryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
 import myEntryFactory from '../../../../factory/CustomEntryFactory';
 
-import { ServiceConstants } from '../../../../constants/ServiceConstants';
+import { TriggerTypeConstants } from '../../../../constants/TriggerTypeConstants';
 
 import timerEventProps from './TimerEventProps';
 
@@ -22,18 +22,26 @@ export default function(group, element, translate) {
             defaultText : 'Choose Service...',
             selectOptions: [ 
                                 { label: 'Storage', entries: [ 
-                                    { name: 'Object Storage', value: ServiceConstants.objectStorage } ] 
+                                    { name: 'Object Storage', value: TriggerTypeConstants.objectStorage } ] 
                                 }, 
                                 { label: 'Database', entries: [ 
-                                    { name: 'NoSQL Database', value: ServiceConstants.noSQLDB } ]
+                                    { name: 'Document Store', value: TriggerTypeConstants.documentStore } ]
                                 }, 
-                                { label: 'Application Service', entries: [ 
-                                    { name: 'Queuing Services', value: ServiceConstants.queue }, 
-                                    { name: 'Notification Services', value: ServiceConstants.notification } ] 
+                                { label: 'Messaging', entries: [ 
+                                    { name: 'Queuing Service', value: TriggerTypeConstants.queue }, 
+                                    { name: 'PubSub Service', value: TriggerTypeConstants.pubsub } ] 
                                 } 
                             ],
             modelProperty : 'trigger'
         }));
+
+        if (element.businessObject.trigger && element.businessObject.trigger === TriggerTypeConstants.queue) {
+            group.entries.push(entryFactory.checkbox(translate, {
+                id : 'fifo',
+                label : 'FIFO',
+                modelProperty : 'fifo'
+            }));
+        }
     }
 
 }

@@ -1,8 +1,9 @@
 import ObjectStorage from '../../resources/service-calls/ObjectStorage.json';
 import Queue from '../../resources/service-calls/Queue.json';
 import FifoQueue from '../../resources/service-calls/FifoQueue.json';
+import PubSub from '../../resources/service-calls/PubSub.json';
 
-import { ServiceConstants } from '../constants/ServiceConstants';
+import { ServiceTypeConstants } from '../constants/ServiceTypeConstants';
 
 export class ServiceCallManager {
 
@@ -10,11 +11,17 @@ export class ServiceCallManager {
         let serviceCalls;
 
         switch(serviceType) {
-            case ServiceConstants.objectStorage:
+            case ServiceTypeConstants.objectStorage:
                 serviceCalls = ObjectStorage;
                 break;
-            case ServiceConstants.queue:
-                serviceCalls = {standard: Queue, fifo: FifoQueue};
+            case ServiceTypeConstants.queue:
+                serviceCalls = Queue;
+                break;
+            case ServiceTypeConstants.fifoQueue:
+                serviceCalls = FifoQueue;
+                break;
+            case ServiceTypeConstants.pubsub:
+                serviceCalls = PubSub;
                 break;
             default:
               // code block

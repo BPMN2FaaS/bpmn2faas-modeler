@@ -5,7 +5,7 @@
     "type":             "string",
     "datacontenttype":  "string",
     "time":             "string",
-    "message_body":     "string",
-    "queue_name":       "string",
+    "newItem":          "object",
+    "oldITem":          "object",
     "data":             "object"
 }

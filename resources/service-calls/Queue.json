@@ -1,32 +1,66 @@
 [
     {
         "name": "send_message",
-        "args": ["queue_name", "message"],
+        "args": [
+            {
+                "name": "queue_name",
+                "type": "string"
+            },
+            {
+                "name": "message",
+                "type": "string"
+            }
+        ],
         "direction": "out"
     },
     {
         "name": "receive_message",
-        "args": ["queue_name"],
+        "args": [
+            {
+                "name": "queue_name",
+                "type": "string"
+            }
+        ],
         "direction": "in"
     },
     {
         "name": "list_queues",
-        "args": ["queue_name_prefix"],
+        "args": [
+            {
+                "name": "name_prefix (Optional)",
+                "type": "string"
+            }
+        ],
         "direction": "in"
     },
     {
         "name": "create_queue",
-        "args": ["queue_name"],
+        "args": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
         "direction": "out"
     },
     {
         "name": "delete_queue",
-        "args": ["queue_name"],
+        "args": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
         "direction": "out"
     },
     {
         "name": "clear_queue",
-        "args": ["queue_name"],
+        "args": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
         "direction": "out"
     }
 ]

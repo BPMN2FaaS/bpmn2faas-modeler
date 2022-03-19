@@ -2,7 +2,7 @@ import entryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
 import myEntryFactory from '../../../../factory/CustomEntryFactory';
 
 import { ServiceCallManager } from '../../../../utils/ServiceCallManager';
-import { ServiceConstants } from '../../../../constants/ServiceConstants';
+import { ServiceTypeConstants } from '../../../../constants/ServiceTypeConstants';
 import { getArgs, createLoopProps } from './TaskProps'
 
 import { is } from 'bpmn-js/lib/util/ModelUtil';
@@ -11,6 +11,7 @@ import { is } from 'bpmn-js/lib/util/ModelUtil';
 export default function(group, element, translate) {
 
     group.label = 'Service Call Properties';
+    createLoopProps(group, element, translate);
 
     let serviceCalls;
     let db;
@@ -20,11 +21,11 @@ export default function(group, element, translate) {
             db = in_arrow.source;
             let dbService = db.businessObject.service;
 
-            if (element.businessObject.service !== ServiceConstants.objectStorage || element.businessObject.service === ServiceConstants.noSQLDB) {
+            if (element.businessObject.service !== ServiceTypeConstants.objectStorage || element.businessObject.service === ServiceTypeConstants.noSQLDB) {
                 delete element.businessObject.service;
             }
 
-            if (dbService === ServiceConstants.objectStorage || dbService === ServiceConstants.noSQLDB) {
+            if (dbService === ServiceTypeConstants.objectStorage || dbService === ServiceTypeConstants.noSQLDB) {
                 serviceCalls = ServiceCallManager.getServiceCalls(dbService, 'in');
                 for (let serviceCall of serviceCalls) {
                     serviceCall.value = serviceCall.name;
@@ -41,11 +42,11 @@ export default function(group, element, translate) {
                 db = out_arrow.target;
                 let dbService = db.businessObject.service;
 
-                if (element.businessObject.service !== ServiceConstants.objectStorage || element.businessObject.service === ServiceConstants.noSQLDB) {
+                if (element.businessObject.service !== ServiceTypeConstants.objectStorage || element.businessObject.service === ServiceTypeConstants.noSQLDB) {
                     delete element.businessObject.service;
                 }
 
-                if (dbService === ServiceConstants.objectStorage || dbService === ServiceConstants.noSQLDB) {
+                if (dbService === ServiceTypeConstants.objectStorage || dbService === ServiceTypeConstants.noSQLDB) {
                     serviceCalls = ServiceCallManager.getServiceCalls(dbService, 'out');
                     for (let serviceCall of serviceCalls) {
                         serviceCall.value = serviceCall.name;
@@ -58,13 +59,12 @@ export default function(group, element, translate) {
     }
 
     if (!db) {
-        if (element.businessObject.service === ServiceConstants.objectStorage) delete element.businessObject.service;
+        if (element.businessObject.service === ServiceTypeConstants.objectStorage) delete element.businessObject.service;
         
         let onChange = function () {
             delete element.businessObject.serviceCall;
             delete element.businessObject.fifo;
             for (let i = 0; i <= 5; i++) delete element.businessObject['arg'+i];
-            console.log('working');
         }
 
         group.entries.push(myEntryFactory.groupedSelectBox(translate, {
@@ -73,10 +73,9 @@ export default function(group, element, translate) {
             label : 'Service',
             defaultText : 'Choose Service...',
             selectOptions: [ 
-                                { label: 'Application Service', entries: [ 
-                                    { name: 'Queuing Service', value: ServiceConstants.queue },
-                                    { name: 'Queuing Service', value: ServiceConstants.objectStorage },
-                                    /*{ name: 'Notification Service', value: ServiceConstants.notification }*/ ] 
+                                { label: 'Messaging', entries: [ 
+                                    { name: 'Queuing Service', value: ServiceTypeConstants.queue },
+                                    { name: 'PubSub Service', value: ServiceTypeConstants.pubsub }] 
                                 } 
                             ],
             onChange: onChange,
@@ -85,27 +84,22 @@ export default function(group, element, translate) {
 
         if (element.businessObject.service) {
             serviceCalls = ServiceCallManager.getServiceCalls(element.businessObject.service);
-            if (element.businessObject.service === ServiceConstants.queue) {
-                if (element.businessObject.fifo === undefined) element.businessObject.fifo = false;
-                if (element.businessObject.fifo) serviceCalls = serviceCalls.fifo;
-                else serviceCalls = serviceCalls.standard
 
-                let onClick = function (checked) {
+            if (element.businessObject.service === ServiceTypeConstants.queue) {
+                if (element.businessObject.fifo === undefined) element.businessObject.fifo = false;
+                if (element.businessObject.fifo) serviceCalls = ServiceCallManager.getServiceCalls(ServiceTypeConstants.fifoQueue);
+
+                let resetFunction = function (checked) {
                     delete element.businessObject.serviceCall;
                     for (let i = 1; i <= 5; i++) delete element.businessObject['arg'+1];
-                    serviceCalls = ServiceCallManager.getServiceCalls(element.businessObject.service);
-                    if (checked) serviceCalls = serviceCalls.fifo;
-                    else serviceCalls = serviceCalls.standard;
-                    console.log('fifo deleted');
                 }
 
                 group.entries.push(myEntryFactory.checkbox(translate, {
                     id : 'fifo',
                     label : 'FIFO',
-                    onClick: onClick,
+                    onClick: resetFunction,
                     modelProperty : 'fifo'
                 }));
-;
             } else delete element.businessObject.fifo;
 
             for (let serviceCall of serviceCalls) {
@@ -115,8 +109,6 @@ export default function(group, element, translate) {
     }
 
     if (serviceCalls) {
-        createLoopProps(group, element, translate);
-
         group.entries.push(myEntryFactory.selectBox(translate, {
             id : 'serviceCall'+(element.businessObject.fifo ? 'fifo' : ''),
             description : 'Choose the Service Function',
@@ -138,15 +130,15 @@ export default function(group, element, translate) {
                 if (element.businessObject.$attrs['advancedInput' + (i+1)]) {
                     group.entries.push(entryFactory.textBox(translate, {
                         id : 'arg' + (i+1) + ' (advanced)',
-                        description : 'Specify the argument <' + serviceCall.args[i] + '>',
-                        label : 'Argument ' + (i+1),
+                        description : 'Specify the argument as ' + serviceCall.args[i].type,
+                        label : 'Argument ' + (i+1) + ': ' + serviceCall.args[i].name,
                         modelProperty : 'arg' + (i+1)
                     }));
                 } else {
                     group.entries.push(myEntryFactory.selectBox(translate, {
                         id : 'arg' + (i+1),
-                        description : 'Specify the argument <' + serviceCall.args[i] + '>',
-                        label : 'Argument ' + (i+1),
+                        description : 'Specify the argument as ' + serviceCall.args[i].type,
+                        label : 'Argument ' + (i+1) + ': ' + serviceCall.args[i].name,
                         defaultText : 'Choose argument...',
                         selectOptions : getArgs(element),
                         modelProperty : 'arg' + (i+1)

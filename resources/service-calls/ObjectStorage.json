@@ -1,17 +1,48 @@
 [
     {
         "name": "get_object",
-        "args": ["container", "file_path"],
+        "args": [
+            {
+                "name": "container",
+                "type": "string"
+            },
+            {
+                "name": "file_path",
+                "type": "string"
+            }
+        ],
         "direction": "in"
     },
     {
         "name": "put_object",
-        "args": ["container", "file_path", "data"],
+        "args": [
+            {
+                "name": "container",
+                "type": "string"
+            },
+            {
+                "name": "file_path",
+                "type": "string"
+            },
+            {
+                "name": "data",
+                "type": "string"
+            }
+        ],
         "direction": "out"
     },
     {
         "name": "delete_object",
-        "args": ["container", "file_path"],
+        "args": [
+            {
+                "name": "container",
+                "type": "string"
+            },
+            {
+                "name": "file_path",
+                "type": "string"
+            }
+        ],
         "direction": "out"
     },
     {
@@ -20,18 +51,28 @@
         "direction": "in"
     },
     {
+        "name": "list_containers",
+        "args": [],
+        "direction": "in"
+    },
+    {
         "name": "create_container",
-        "args": ["name"],
+        "args": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
         "direction": "out"
     },
     {
         "name": "delete_container",
-        "args": ["name"],
+        "args": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
         "direction": "out"
-    },
-    {
-        "name": "list_containers",
-        "args": [],
-        "direction": "in"
     }
 ]

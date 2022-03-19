@@ -1,12 +1,34 @@
 [
     {
         "name": "send_message",
-        "args": ["queue_name", "message", "deduplication_id", "group_id"],
+        "args": [
+            {
+                "name": "queue_name",
+                "type": "string"
+            },
+            {
+                "name": "message",
+                "type": "string"
+            },
+            {
+                "name": "deduplication_id",
+                "type": "string"
+            },
+            {
+                "name": "group_id",
+                "type": "string"
+            }
+        ],
         "direction": "out"
     },
     {
         "name": "receive_message",
-        "args": ["queue_name"],
+        "args": [
+            {
+                "name": "queue_name",
+                "type": "string"
+            }
+        ],
         "direction": "in"
     },
     {
@@ -16,12 +38,22 @@
     },
     {
         "name": "create_queue",
-        "args": ["queue_name"],
+        "args": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
         "direction": "out"
     },
     {
         "name": "delete_queue",
-        "args": ["queue_name"],
+        "args": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
         "direction": "out"
     }
 ]

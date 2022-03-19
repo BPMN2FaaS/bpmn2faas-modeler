@@ -4,19 +4,19 @@ import myEntryFactory from '../../../../factory/CustomEntryFactory';
 import serviceTaskProps from './ServiceTaskProps';
 
 import InputFunctions from '../../../../utils/BusinessFunctions';
-import { ServiceCallManager } from '../../../../utils/ServiceCallManager';
 import { EventSchemaManager } from '../../../../utils/EventSchemaManager';
-import { ServiceConstants } from '../../../../constants/ServiceConstants';
 
 import { is } from 'bpmn-js/lib/util/ModelUtil';
-import { getPriviousTaskNames, getTriggerType } from '../../../../orchestrator-generation/util/util'
+import { getPriviousTaskNames, getTriggerType } from '../../../../orchestrator-generation/util/util';
 
 
 export default function(group, element, translate) {
 
     if (is(element, 'bpmn:ServiceTask')) {
+        delete element.businessObject.function;
         serviceTaskProps(group, element, translate);
     } else if (element.type === 'bpmn:Task') {
+        delete element.businessObject.serviceCall;
         group.label = 'Function Properties';
 
         createLoopProps(group, element, translate);

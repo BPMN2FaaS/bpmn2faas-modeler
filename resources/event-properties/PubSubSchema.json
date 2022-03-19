@@ -5,7 +5,8 @@
     "type":             "string",
     "datacontenttype":  "string",
     "time":             "string",
+    "message_id":       "string",
     "message_body":     "string",
-    "queue_name":       "string",
+    "topic":            "string",
     "data":             "object"
 }

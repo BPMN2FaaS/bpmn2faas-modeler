@@ -6,6 +6,8 @@
     "datacontenttype":  "string",
     "time":             "string",
     "message_body":     "string",
+    "deduplication_id": "string",
+    "group_id":         "string",
     "queue_name":       "string",
     "data":             "object"
 }

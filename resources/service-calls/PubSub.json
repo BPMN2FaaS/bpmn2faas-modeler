@@ -1,0 +1,45 @@
+[
+    {
+        "name": "publish_message",
+        "args": [
+            {
+                "name": "topic",
+                "type": "string"
+            },
+            {
+                "name": "message",
+                "type": "boolean"
+            }
+        ],
+        "direction": "out"
+    },
+    {
+        "name": "list_topics",
+        "args": [],
+        "direction": "in"
+    },
+    {
+        "name": "create_topic",
+        "args": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "fifo_support",
+                "type": "boolean"
+            }
+        ],
+        "direction": "out"
+    },
+    {
+        "name": "delete_topic",
+        "args": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "direction": "out"
+    }
+]

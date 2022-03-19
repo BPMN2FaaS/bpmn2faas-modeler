@@ -9,6 +9,8 @@ import {
 } from "./Constants";
 
 import {is} from 'bpmn-js/lib/util/ModelUtil';
+import { ServiceConstants } from "../../constants/ServiceTypeConstants";
+import { TriggerTypeConstants } from "../../constants/TriggerTypeConstants";
 
 export function isOpening(element) {
     return element.incoming && element.incoming.length && element.incoming.length === 1
@@ -101,9 +103,9 @@ export function getTriggerType(element) {
     for (const sourceElement of traverseBackwards(element)) {
         if (is(sourceElement, 'bpmn:StartEvent')) {
             if (sourceElement.businessObject.trigger) {
-                return sourceElement.businessObject.trigger;
-            } else if (sourceElement.businessObject.eventDefinitions && sourceElement.businessObject.eventDefinitions[0].$type === 'bpmn:TimerEventDefinition') {
-                return 'timer';
+                if (sourceElement.businessObject.trigger === TriggerTypeConstants.queue && sourceElement.businessObject.fifo) {
+                    return 'fifoQueue';
+                } else return sourceElement.businessObject.trigger;
             }
         }
     }
