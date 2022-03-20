@@ -21,24 +21,6 @@
       ]
     },
     {
-      "name": "MaToSWoProcess",
-      "extends": [
-        "bpmn:Process"
-      ],
-      "properties": [
-        {
-          "name": "awsAccountId",
-          "isAttr": true,
-          "type": "String"
-        },
-        {
-          "name": "awsAccountRegion",
-          "isAttr": true,
-          "type": "String"
-        }
-      ]
-    },
-    {
       "name": "FaaSExclusiveGateway",
       "extends": [
         "bpmn:ExclusiveGateway"
@@ -71,42 +53,6 @@
           "name": "defaultBranch",
           "isAttr": true,
           "type": "Boolean"
-        }
-      ]
-    },
-    {
-      "name": "MaToSWoParallelGateway",
-      "extends": [
-        "bpmn:ParallelGateway"
-      ],
-      "properties": [
-        {
-          "name": "inputSchema",
-          "isAttr": true,
-          "type": "String"
-        },
-        {
-          "name": "outputSchema",
-          "isAttr": true,
-          "type": "String"
-        }
-      ]
-    },
-    {
-      "name": "MaTosWoIntermediateCatchEventTimer",
-      "extends": [
-        "bpmn:IntermediateCatchEvent"
-      ],
-      "properties": [
-        {
-          "name": "milliseconds",
-          "isAttr": true,
-          "type": "String"
-        },
-        {
-          "name": "inputSchema",
-          "isAttr": true,
-          "type": "String"
         }
       ]
     },
@@ -243,14 +189,6 @@
           "isAttr": true,
           "type": "String"
         }
-      ]
-    },
-    {
-      "name": "Queue",
-      "properties": [
-        { "name": "id", "type": "String", "isAttr": true },
-        { "name": "endpoint", "type": "String", "isAttr": true},
-        { "name": "type", "type": "String", "isAttr": true }
       ]
     }
   ]
