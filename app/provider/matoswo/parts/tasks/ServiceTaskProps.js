@@ -25,7 +25,7 @@ export default function(group, element, translate) {
                 delete element.businessObject.service;
             }
 
-            if (dbService === ServiceTypeConstants.objectStorage || dbService === ServiceTypeConstants.noSQLDB) {
+            if (dbService === ServiceTypeConstants.objectStorage) {
                 serviceCalls = ServiceCallManager.getServiceCalls(dbService, 'in');
                 for (let serviceCall of serviceCalls) {
                     serviceCall.value = serviceCall.name;

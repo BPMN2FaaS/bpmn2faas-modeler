@@ -6,6 +6,7 @@ import propertiesProviderModule from './provider/matoswo';
 import bpmn2faasModdleDescriptor from './descriptors/bpmn2faasModdle';
 
 import {debounce} from 'min-dash';
+import { v1 as uuidv1 } from 'uuid';
 
 import diagramXML from '../resources/newDiagram.bpmn';
 
@@ -64,13 +65,20 @@ function registerFileDrop(container) {
             var files = e.dataTransfer.files;
             var file = files[0];
             if (file.type === 'application/zip') {
-                uploadFile(file, function(err, data) {
-                    if(err) {
-                        alert('Please refresh the page and try again. Error: ' + err.message);
+                var progressBar = $("progress");
+                progressBar.attr('value', 0.5);
+
+                sendBusinessCode(file, function(result) {
+                    console.log(JSON.parse(result));
+                    InputFunctions.input = JSON.parse(result);
+                    progressBar.attr('value', 1);
+                    $('#js-without-zip').addClass('with-zip');
+                    progressBar.addClass('with-zip');
+                    $('#js-with-zip').removeClass('with-zip');
+                    zipReceived = true;
+                }, function(err) {
+                    alert('Please refresh the page and try again. Error: ' + err.message);
                         window.location.reload();
-                    } else {
-                        getFunctionNames(file);
-                    }
                 });
             } else {
                 var textElement = $('#js-without-zip')[0];
@@ -101,81 +109,26 @@ function registerFileDrop(container) {
     container.get(0).addEventListener('drop', handleFileSelect, false);
 }
 
-function uploadFile(file, callback) {
-    var bucketName = "bpmn2faas-function-upload-bucket";
-    var bucketRegion = "eu-central-1";
-    var IdentityPoolId = "eu-central-1:221659c3-d39b-4daf-9a20-b53de7d5d449";
-
-    AWS.config.update({
-        region: bucketRegion,
-        credentials: new AWS.CognitoIdentityCredentials({
-            IdentityPoolId: IdentityPoolId
-        })
-    });
-
-    var s3 = new AWS.S3({
-        apiVersion: '2006-03-01',
-        params: {Bucket: bucketName}
-    });
-
-    var progressBar = $("progress");
-
-    s3.upload({
-        Key: file.name,
-        Body: file,
-        ContentType: file.type
-        }, function(err, data) {
-            callback(err, data);
-        }
-    ).on('httpUploadProgress', function (progress) {
-        var uploaded = parseInt((progress.loaded) / progress.total);
-        progressBar.attr('value', uploaded/2);
-    });
-}
-
-function getFunctionNames(file) {
-    AWS.config.update({
-        region: 'eu-central-1',
-        credentials: new AWS.CognitoIdentityCredentials({
-            IdentityPoolId: 'eu-central-1:221659c3-d39b-4daf-9a20-b53de7d5d449'
-        })
-    });
-    var lambda = new AWS.Lambda();
-    var params = {
-        FunctionName: 'arn:aws:lambda:eu-central-1:743714542295:function:GetFunctionNames',
-        InvocationType: 'RequestResponse',
-        LogType: 'None',
-        Payload: JSON.stringify(file.name)
-    };
-    lambda.invoke(params, function(err, data) {
-        if (err) console.log(err, err.stack);
-        else {
-            console.log(JSON.parse(data.Payload).body);
-            InputFunctions.input = JSON.parse(data.Payload).body;
-            var progressBar = $("progress");
-            progressBar.attr('value', 1);
-            $('#js-without-zip').addClass('with-zip');
-            progressBar.addClass('with-zip');
-            $('#js-with-zip').removeClass('with-zip');
-            zipReceived = true;
-        }
-    });
-
-    /*var formData = new FormData();
+function sendBusinessCode(file, callback, error) {
+    var formData = new FormData();
     formData.append('file', file);
-    console.log(file);
+    document.cookie = 'session_id=' + uuidv1();
     $.ajax({
-        url: 'https://kob9neyge1.execute-api.eu-central-1.amazonaws.com/prod/GetFunctionNames',    //Your api url
-        type: 'POST',   //type is any HTTP method
+        url: 'http://localhost:8001/upload-files',    //Your api url
+        type: 'PUT',   //type is any HTTP method
         crossDomain: true,
         processData: false,
-        contentType: 'multipart/form-data',
+        xhrFields: { withCredentials: true },
+        contentType: false,
         data: formData,   //Data as js object
         success: function (result) {
-            console.log(result);
+            callback(result);
         },
-        async: 'false'
-    });*/
+        error: function (err) {
+            error(err);
+        },
+        //async: 'false'
+    });
 }
 
 ////// file drag / drop ///////////////////////
