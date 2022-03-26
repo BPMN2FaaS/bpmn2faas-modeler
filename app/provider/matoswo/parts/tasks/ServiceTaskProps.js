@@ -21,8 +21,9 @@ export default function(group, element, translate) {
             db = in_arrow.source;
             let dbService = db.businessObject.service;
 
-            if (element.businessObject.service !== ServiceTypeConstants.objectStorage || element.businessObject.service === ServiceTypeConstants.noSQLDB) {
+            if (element.businessObject.service !== ServiceTypeConstants.objectStorage) {
                 delete element.businessObject.service;
+                delete element.businessObject.fifo;
             }
 
             if (dbService === ServiceTypeConstants.objectStorage) {
@@ -42,11 +43,12 @@ export default function(group, element, translate) {
                 db = out_arrow.target;
                 let dbService = db.businessObject.service;
 
-                if (element.businessObject.service !== ServiceTypeConstants.objectStorage || element.businessObject.service === ServiceTypeConstants.noSQLDB) {
+                if (element.businessObject.service !== ServiceTypeConstants.objectStorage) {
                     delete element.businessObject.service;
+                    delete element.businessObject.fifo;
                 }
 
-                if (dbService === ServiceTypeConstants.objectStorage || dbService === ServiceTypeConstants.noSQLDB) {
+                if (dbService === ServiceTypeConstants.objectStorage) {
                     serviceCalls = ServiceCallManager.getServiceCalls(dbService, 'out');
                     for (let serviceCall of serviceCalls) {
                         serviceCall.value = serviceCall.name;

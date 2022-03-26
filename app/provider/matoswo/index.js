@@ -1,6 +1,6 @@
-import MaToSWoPropertiesProvider from './MaToSWoPropertiesProvider';
+import PropertiesProvider from './PropertiesProvider';
 
 export default {
   __init__: [ 'propertiesProvider' ],
-  propertiesProvider: [ 'type', MaToSWoPropertiesProvider ]
+  propertiesProvider: [ 'type', PropertiesProvider ]
 };

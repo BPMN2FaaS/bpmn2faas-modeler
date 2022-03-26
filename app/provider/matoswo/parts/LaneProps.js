@@ -1,5 +1,4 @@
 import entryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
-import myEntryFactory from '../../../factory/CustomEntryFactory';
 
 
 export default function(group, element, translate) {
@@ -11,6 +10,6 @@ export default function(group, element, translate) {
         description : 'Descriptor of the handler function',
         label : 'Handler',
         modelProperty : 'handler'
-      }));
+    }));
 
 }

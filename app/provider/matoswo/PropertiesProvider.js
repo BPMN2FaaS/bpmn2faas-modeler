@@ -14,7 +14,9 @@ import nameProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/NameProp
 import dataStoreProps from './parts/DataStoreProps';
 import startEventProps from './parts/startEvents/StartEventProps';
 import laneProps from './parts/LaneProps';
+import poolProps from './parts/PoolProps';
 import taskProps from './parts/tasks/TaskProps';
+import endpointProps from './parts/tasks/EndpointProps';
 import exclusiveGatewayProps from './parts/gateways/ExclusiveGatewayProps';
 
 
@@ -44,37 +46,54 @@ function createGeneralTabGroups(element, bpmnFactory, canvas, elementRegistry, t
     ];
 }
 
-// Create the custom service tab
-function createMaToSWoTabGroups(element, translate) {
-    // Create a group called "Service Properties".
-    var serviceGroup = {
-        id: 'matoswo-tab',
-        label: 'Service Properties',
+function createPropertiesTabGroups(element, translate) {
+    // Create a group called "Properties".
+    var propertiesGroup = {
+        id: 'properties-tab',
+        label: 'Properties',
         entries: []
     };
 
     console.log(element);
-    // Add the matoswo props to the matoswoGroup group.
     if (is(element, 'bpmn:DataStoreReference') || is(element, 'bpmn:DataObjectReference') || is(element, 'bpmn:DataInputAssociation') || is(element, 'bpmn:DataOutputAssociation')) {
-        dataStoreProps(serviceGroup, element, translate);
+        dataStoreProps(propertiesGroup, element, translate);
     } else if (is(element, 'bpmn:StartEvent')) {
-        startEventProps(serviceGroup, element, translate);
+        startEventProps(propertiesGroup, element, translate);
     } else if (is(element, 'bpmn:Lane')) {
-        laneProps(serviceGroup, element, translate);
+        laneProps(propertiesGroup, element, translate);
+    } else if (is(element, 'bpmn:Participant')) {
+        poolProps(propertiesGroup, element, translate);
     } else if (is(element, 'bpmn:Task')) {
-        taskProps(serviceGroup, element, translate);
+        taskProps(propertiesGroup, element, translate);
     } else if (is(element, 'bpmn:ExclusiveGateway') || is(element, 'bpmn:SequenceFlow')) {
-        exclusiveGatewayProps(serviceGroup, element, translate);
+        exclusiveGatewayProps(propertiesGroup, element, translate);
     } else {
         //console.log(element);
     }
 
     return [
-        serviceGroup
+        propertiesGroup
     ];
 }
 
-export default function MaToSWoPropertiesProvider(eventBus, bpmnFactory, canvas, elementRegistry, translate) {
+function createEndpointTabGroups(element, translate) {
+    // Create a group called "Endpoint Properties".
+    var endpointGroup = {
+        id: 'endpoint-tab',
+        label: 'Endpoint Properties',
+        entries: []
+    };
+
+    if (is(element, 'bpmn:ServiceTask')) {
+        endpointProps(endpointGroup, element, translate);
+    }
+
+    return [
+        endpointGroup
+    ];
+}
+
+export default function PropertiesProvider(eventBus, bpmnFactory, canvas, elementRegistry, translate) {
     PropertiesActivator.call(this, eventBus);
 
     this.getTabs = function (element) {
@@ -85,19 +104,24 @@ export default function MaToSWoPropertiesProvider(eventBus, bpmnFactory, canvas,
             groups: createGeneralTabGroups(element, bpmnFactory, canvas, elementRegistry, translate)
         };
 
-        // The "matoswo" tab
-        var matoswoTab = {
-            id: 'matoswo',
+        var propertiesTab = {
+            id: 'properties',
             label: 'Properties',
-            groups: createMaToSWoTabGroups(element, translate)
+            groups: createPropertiesTabGroups(element, translate)
         };
 
-        // Show general + "matoswo" tab
+        var endpointTab = {
+            id: 'endpoint',
+            label: 'Endpoint',
+            groups: createEndpointTabGroups(element, translate)
+        };
+
         return [
             generalTab,
-            matoswoTab
+            propertiesTab,
+            endpointTab
         ];
     };
 }
 
-inherits(MaToSWoPropertiesProvider, PropertiesActivator);
+inherits(PropertiesProvider, PropertiesActivator);
