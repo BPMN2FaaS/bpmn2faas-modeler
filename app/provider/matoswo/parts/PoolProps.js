@@ -20,7 +20,7 @@ export default function(group, element, translate) {
         id : 'provider',
         description : 'Specify the cloud provider',
         label : 'Cloud Provider',
-        defaultText : 'Choose provider...',
+        defaultText : 'Choose Provider...',
         selectOptions : [
                             { name: 'AWS', value: CloudProviderConstants.aws },
                             { name: 'Microsoft Azure', value: CloudProviderConstants.azure }
@@ -28,8 +28,6 @@ export default function(group, element, translate) {
         onChange: onChange,
         modelProperty : 'provider'
     }));
-
-    console.log(EndpointManager.endpoints);
 
 }
 

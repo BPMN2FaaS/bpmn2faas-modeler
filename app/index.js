@@ -1,9 +1,12 @@
 import $ from 'jquery';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
+import {is} from 'bpmn-js/lib/util/ModelUtil';
 
 import propertiesPanelModule from 'bpmn-js-properties-panel';
 import propertiesProviderModule from './provider/matoswo';
 import bpmn2faasModdleDescriptor from './descriptors/bpmn2faasModdle';
+import EndpointManager from './utils/EndpointManager';
+import { CloudProviderConstants } from './constants/CloudProviderConstants';
 
 import {debounce} from 'min-dash';
 import { v1 as uuidv1 } from 'uuid';
@@ -131,6 +134,28 @@ function sendBusinessCode(file, callback, error) {
     });
 }
 
+function sendBPMN(bpmn, callback, error) {
+    var formData = new FormData();
+    formData.append('bpmn', bpmn.xml);
+    formData.append('endpoints', JSON.stringify(EndpointManager.endpoints));
+    $.ajax({
+        url: 'http://localhost:8001/generate',    //Your api url
+        type: 'PUT',   //type is any HTTP method
+        crossDomain: true,
+        processData: false,
+        xhrFields: { withCredentials: true },
+        contentType: false,
+        data: formData,   //Data as js object
+        success: function (result) {
+            callback(result);
+        },
+        error: function (err) {
+            error(err);
+        },
+        //async: 'false'
+    });
+}
+
 ////// file drag / drop ///////////////////////
 // check file api availability
 if (!window.FileList || !window.FileReader) {
@@ -149,8 +174,11 @@ $(function () {
         createNewDiagram();
     });
 
+    var {xml} = {};
+
     var downloadLink = $('#js-download-diagram');
     var downloadSvgLink = $('#js-download-svg');
+    var testButton = $('#generate');
     /*var downloadStepFunctionsLink = $('#js-download-aws-step-functions');
     var downloadDurableFunctionsLink = $('#js-download-azure-durable-functions');
     var downloadDurablePythonFunctionsLink = $('#js-download-azure-durable-python-functions');
@@ -161,6 +189,15 @@ $(function () {
         if (!$(this).is('.active')) {
             e.preventDefault();
             e.stopPropagation();
+        } else {
+            if ($(this)[0].id === 'generate') {
+                sendBPMN(xml, function(result) {
+                    console.log(result);
+                }, function(err) {
+                    alert('Please refresh the page and try again. Error: ' + err.message);
+                        window.location.reload();
+                });
+            }
         }
     });
 
@@ -181,6 +218,41 @@ $(function () {
         }
     }
 
+    function validate(link, data) {
+        const bpmnJson = bpmnModeler.get('canvas').getRootElement().businessObject.$parent;
+
+        let valid = false;
+
+        if (bpmnJson.rootElements[0].participants.length === 1) {
+            const pool = bpmnJson.rootElements[0].participants[0];
+            if (pool.$attrs.provider) {
+                valid = true;
+                for (const element of pool.processRef.flowElements) {
+                    if (is(element, 'bpmn:ServiceTask')) {
+                        if (pool.$attrs.provider === CloudProviderConstants.aws) {
+                            if (!element.$attrs.arn) {
+                                valid = false;
+                                break;
+                            }
+                        } else if (pool.$attrs.provider === CloudProviderConstants.azure) {
+                            if (!element.$attrs.connectionString) {
+                                valid = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (valid && data) {
+            link.addClass('active');
+        } else {
+            link.removeClass('active');
+        }
+        
+    }
+
     var exportArtifacts = debounce(async function () {
         try {
             const {svg} = await bpmnModeler.saveSVG();
@@ -191,11 +263,13 @@ $(function () {
         }
 
         try {
-            const {xml} = await bpmnModeler.saveXML({format: true});
+            xml = await bpmnModeler.saveXML({format: true});
             setEncoded(downloadLink, 'diagram.bpmn', xml);
+            validate(testButton, 'diagram.bpmn', xml);
         } catch (err) {
             console.error('Error happened saving diagram: ', err);
             setEncoded(downloadLink, 'diagram.bpmn', null);
+            validate(testButton, 'diagram.bpmn', null);
         }
 
         /////////////////////////////////////////////////////////////////////////////////////
