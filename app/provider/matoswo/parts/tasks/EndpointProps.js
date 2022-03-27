@@ -2,6 +2,7 @@ import entryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
 import myEntryFactory from '../../../../factory/CustomEntryFactory';
 
 import { CloudProviderConstants } from '../../../../constants/CloudProviderConstants';
+import EndpointManager from '../../../../utils/EndpointManager';
 
 
 export default function(group, element, translate) {
@@ -16,6 +17,7 @@ export default function(group, element, translate) {
                 label : 'ARN',
                 modelProperty : 'arn'
             }));
+            if (element.businessObject.$attrs.arn) EndpointManager.endpoints.endpoints[element.id] = element.businessObject.$attrs.arn;
             break;
         case CloudProviderConstants.azure:
             group.entries.push(entryFactory.textBox(translate, {
@@ -24,9 +26,12 @@ export default function(group, element, translate) {
                 label : 'Connection String',
                 modelProperty : 'connectionString'
             }));
+            if (element.businessObject.$attrs.connectionString) EndpointManager.endpoints.endpoints[element.id] = element.businessObject.$attrs.connectionString;
             break;
         default:
             break;
     }
+
+    console.log(EndpointManager.endpoints);
 
 }

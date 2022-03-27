@@ -40,6 +40,7 @@ var selectbox = function(translate, options, defaultParameters) {
       label = options.label || resource.id,
       defaultText = options.defaultText || 'Choose option...',
       selectOptions = options.selectOptions || [ { name: '', value: '' } ],
+      onChange = !!options.onChange && typeof options.onChange === 'function',
       modelProperty = options.modelProperty,
       emptyParameter = options.emptyParameter,
       canBeDisabled = !!options.disabled && typeof options.disabled === 'function',
@@ -59,6 +60,7 @@ var selectbox = function(translate, options, defaultParameters) {
     '>' + escapeHTML(label) + '</label>' +
     '<select id="camunda-' + escapeHTML(resource.id) + '-select" name="' +
     escapeHTML(modelProperty) + '"' +
+    (onChange ? ' onchange="onChange(this.value)" ' : '') +
     (canBeDisabled ? 'data-disable="isDisabled" ' : '') +
     (canBeHidden ? 'data-show="isHidden" ' : '') +
     ' data-value></select>');
@@ -126,6 +128,12 @@ var selectbox = function(translate, options, defaultParameters) {
     }
 
   };
+
+  if (onChange) {
+    select.onChange = function () {
+      return options.onChange.apply(resource, arguments);
+    };
+  }
 
   if (canBeDisabled) {
     resource.isDisabled = function() {

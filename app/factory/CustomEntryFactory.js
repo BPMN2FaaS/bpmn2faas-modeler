@@ -9,7 +9,6 @@ import selectBoxField from './SelectEntryFactory';
 import groupedSelectBoxField from './GroupedSelectEntryFactory';
 import comboBoxField from 'bpmn-js-properties-panel/lib/factory/ComboEntryFactory';
 import textBoxField from 'bpmn-js-properties-panel/lib/factory/TextBoxEntryFactory';
-import disabledTextBoxField from './DisabledTextBoxEntryFactory';
 import validationAwareTextInputField from 'bpmn-js-properties-panel/lib/factory/ValidationAwareTextInput';
 import tableField from 'bpmn-js-properties-panel/lib/factory/TableEntryFactory';
 import labelEntry from 'bpmn-js-properties-panel/lib/factory/LabelFactory';
@@ -140,10 +139,6 @@ EntryFactory.checkbox = function(translate, options) {
 
 EntryFactory.textBox = function(translate, options) {
   return textBoxField(translate, options, setDefaultParameters(options));
-};
-
-EntryFactory.disabledTextBox = function(translate, options) {
-  return disabledTextBoxField(translate, options, setDefaultParameters(options));
 };
 
 EntryFactory.selectBox = function(translate, options) {
