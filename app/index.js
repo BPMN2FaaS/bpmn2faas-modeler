@@ -136,7 +136,7 @@ function sendBusinessCode(file, callback, error) {
 
 function sendBPMN(bpmn, callback, error) {
     var formData = new FormData();
-    formData.append('bpmn', bpmn.xml);
+    formData.append('bpmn', bpmn);
     formData.append('endpoints', JSON.stringify(EndpointManager.endpoints));
     $.ajax({
         url: 'http://localhost:8001/generate',    //Your api url
@@ -191,7 +191,7 @@ $(function () {
             e.stopPropagation();
         } else {
             if ($(this)[0].id === 'generate') {
-                sendBPMN(xml, function(result) {
+                sendBPMN(xml.xml, function(result) {
                     console.log(result);
                 }, function(err) {
                     alert('Please refresh the page and try again. Error: ' + err.message);
@@ -264,8 +264,8 @@ $(function () {
 
         try {
             xml = await bpmnModeler.saveXML({format: true});
-            setEncoded(downloadLink, 'diagram.bpmn', xml);
-            validate(testButton, 'diagram.bpmn', xml);
+            setEncoded(downloadLink, 'diagram.bpmn', xml.xml);
+            validate(testButton, 'diagram.bpmn', xml.xml);
         } catch (err) {
             console.error('Error happened saving diagram: ', err);
             setEncoded(downloadLink, 'diagram.bpmn', null);
