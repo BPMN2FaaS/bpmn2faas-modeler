@@ -19,9 +19,9 @@ grunt auto-build
 
 ```
 project.zip
- | - function1
+ | - function1/
  | | - requirements.txt
- | - function2
+ | - function2/
  | | - requirements.txt
  | - businessCode1.py
  | - businessCode2.py
