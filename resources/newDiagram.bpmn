@@ -5,7 +5,7 @@
   </bpmn2:collaboration>
   <bpmn2:process id="Process_1" isExecutable="false">
     <bpmn2:laneSet id="LaneSet_1qthya9">
-      <bpmn2:lane id="Lane_0lzqw52" name="FaaSFunctionName">
+      <bpmn2:lane id="Lane_0lzqw52" name="function_1">
         <bpmn2:flowNodeRef>StartEvent_1</bpmn2:flowNodeRef>
         <bpmn2:flowNodeRef>Activity_1dpr74l</bpmn2:flowNodeRef>
       </bpmn2:lane>

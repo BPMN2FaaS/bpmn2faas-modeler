@@ -87,12 +87,12 @@ export function getArgs(element) {
         const eventSchema = EventSchemaManager.getEventProperties(triggerType);
 
         for (const [property, type] of Object.entries(eventSchema)) {
-            args.push({value: 'Event['+property+']', name: 'Event['+property+']'});
+            args.push({value: 'event[\''+property+'\']', name: 'event[\''+property+'\']'});
         }
     }
 
     for (const name of getPriviousTaskNames(element)) {
-        args.push({value: name, name: name});
+        args.push({value: 'event[\''+name+'\']', name: name});
     }
 
     return args;

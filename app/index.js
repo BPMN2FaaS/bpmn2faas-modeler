@@ -153,6 +153,7 @@ function sendBPMN(bpmn, callback, error) {
             error(err);
         },
         //async: 'false'
+        timeout: 15000
     });
 }
 
@@ -192,7 +193,14 @@ $(function () {
         } else {
             if ($(this)[0].id === 'generate') {
                 sendBPMN(xml.xml, function(result) {
-                    console.log(result);
+                    result = JSON.parse(result);
+                    const a = document.createElement('a');
+                    var zipFile = new Blob([atob(result.file)], {"type": "application/zip"})
+                    a.href = "data:application/zip;base64," + result.file;
+                    a.style.display = 'none';
+                    a.download = result.filename;
+                    document.body.appendChild(a);
+                    a.click();
                 }, function(err) {
                     alert('Please refresh the page and try again. Error: ' + err.message);
                         window.location.reload();

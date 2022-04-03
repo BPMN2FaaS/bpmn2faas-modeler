@@ -32,6 +32,4 @@ export default function(group, element, translate) {
             break;
     }
 
-    console.log(EndpointManager.endpoints);
-
 }
