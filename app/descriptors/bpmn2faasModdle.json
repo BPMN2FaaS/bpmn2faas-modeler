@@ -190,6 +190,19 @@
           "type": "String"
         }
       ]
+    },
+    {
+      "name": "FaaSEndEvent",
+      "extends": [
+        "bpmn:EndEvent"
+      ],
+      "properties": [
+        {
+          "name": "return",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
     }
   ]
 }

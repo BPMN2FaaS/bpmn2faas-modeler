@@ -13,6 +13,7 @@ import nameProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/NameProp
 // Require custom property entries.
 import dataStoreProps from './parts/DataStoreProps';
 import startEventProps from './parts/startEvents/StartEventProps';
+import endEventProps from './parts/endEvents/EndEventProps';
 import laneProps from './parts/LaneProps';
 import poolProps from './parts/PoolProps';
 import taskProps from './parts/tasks/TaskProps';
@@ -59,14 +60,14 @@ function createPropertiesTabGroups(element, translate) {
         dataStoreProps(propertiesGroup, element, translate);
     } else if (is(element, 'bpmn:StartEvent')) {
         startEventProps(propertiesGroup, element, translate);
-    } else if (is(element, 'bpmn:Lane')) {
-        laneProps(propertiesGroup, element, translate);
     } else if (is(element, 'bpmn:Participant')) {
         poolProps(propertiesGroup, element, translate);
     } else if (is(element, 'bpmn:Task')) {
         taskProps(propertiesGroup, element, translate);
     } else if (is(element, 'bpmn:ExclusiveGateway') || is(element, 'bpmn:SequenceFlow')) {
         exclusiveGatewayProps(propertiesGroup, element, translate);
+    } else if (is(element, 'bpmn:EndEvent')) {
+        endEventProps(propertiesGroup, element, translate);
     } else {
         //console.log(element);
     }
