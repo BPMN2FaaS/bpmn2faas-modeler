@@ -47,7 +47,12 @@
     },
     {
         "name": "list_objects",
-        "args": [],
+        "args": [
+            {
+                "name": "container",
+                "type": "string"
+            }
+        ],
         "direction": "in"
     },
     {
