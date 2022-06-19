@@ -24,9 +24,9 @@ export default function(group, element, translate) {
                                 { label: 'Storage', entries: [ 
                                     { name: 'Object Storage', value: TriggerTypeConstants.objectStorage } ] 
                                 }, 
-                                { label: 'Database', entries: [ 
+                                /*{ label: 'Database', entries: [ 
                                     { name: 'Document Store', value: TriggerTypeConstants.documentStore } ]
-                                }, 
+                                },*/ 
                                 { label: 'Messaging', entries: [ 
                                     { name: 'Queuing Service', value: TriggerTypeConstants.queue }, 
                                     { name: 'PubSub Service', value: TriggerTypeConstants.pubsub } ] 

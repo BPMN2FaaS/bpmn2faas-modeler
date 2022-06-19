@@ -17,7 +17,7 @@ import endEventProps from './parts/endEvents/EndEventProps';
 import laneProps from './parts/LaneProps';
 import poolProps from './parts/PoolProps';
 import taskProps from './parts/tasks/TaskProps';
-import endpointProps from './parts/tasks/EndpointProps';
+import endpointProps from './parts/EndpointProps';
 import exclusiveGatewayProps from './parts/gateways/ExclusiveGatewayProps';
 
 
@@ -85,7 +85,7 @@ function createEndpointTabGroups(element, translate) {
         entries: []
     };
 
-    if (is(element, 'bpmn:ServiceTask')) {
+    if (is(element, 'bpmn:ServiceTask') || is(element, 'bpmn:StartEvent')) {
         endpointProps(endpointGroup, element, translate);
     }
 
