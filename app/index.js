@@ -3,7 +3,7 @@ import BpmnModeler from 'bpmn-js/lib/Modeler';
 import {is} from 'bpmn-js/lib/util/ModelUtil';
 
 import propertiesPanelModule from 'bpmn-js-properties-panel';
-import propertiesProviderModule from './provider/matoswo';
+import propertiesProviderModule from './provider';
 import bpmn2faasModdleDescriptor from './descriptors/bpmn2faasModdle';
 import EndpointManager from './utils/EndpointManager';
 import { CloudProviderConstants } from './constants/CloudProviderConstants';
@@ -15,12 +15,6 @@ import diagramXML from '../resources/newDiagram.bpmn';
 
 import InputFunctions from './utils/BusinessFunctions';
 
-import {BpmnModelOrchestratorTransformation} from './orchestrator-generation/BpmnModelOrchestratorTransformation';
-import {StrictModelValidator} from './orchestrator-generation/traversers/control-flow-hierarchy/validators/StrictModelValidator';
-import {StepFunctionsGenerator} from './orchestrator-generation/traversers/control-flow-hierarchy/generators/StepFunctionsGenerator';
-import {DurableFunctionsGenerator} from './orchestrator-generation/traversers/control-flow-hierarchy/generators/DurableFunctionsGenerator';
-import {DurableFunctionsPythonGenerator} from './orchestrator-generation/traversers/control-flow-hierarchy/generators/DurableFunctionsPythonGenerator';
-import {ComposerGenerator} from './orchestrator-generation/traversers/control-flow-hierarchy/generators/ComposerGenerator';
 
 var zipReceived = false;
 
@@ -180,11 +174,6 @@ $(function () {
     var downloadLink = $('#js-download-diagram');
     var downloadSvgLink = $('#js-download-svg');
     var testButton = $('#generate');
-    /*var downloadStepFunctionsLink = $('#js-download-aws-step-functions');
-    var downloadDurableFunctionsLink = $('#js-download-azure-durable-functions');
-    var downloadDurablePythonFunctionsLink = $('#js-download-azure-durable-python-functions');
-    var downloadOpenWhiskComposerLink = $('#js-download-apache-openwhisk-composer');
-    var downloadIBMComposerLink = $('#js-download-ibm-composer');*/
 
     $('.buttons a').on('click', function (e) {
         if (!$(this).is('.active')) {
@@ -279,83 +268,6 @@ $(function () {
             setEncoded(downloadLink, 'diagram.bpmn', null);
             validate(testButton, 'diagram.bpmn', null);
         }
-
-        /////////////////////////////////////////////////////////////////////////////////////
-        // generate the workflow definitions from the bpmn and make available for download //
-        // as zip archives at their respective download buttons                            //
-        /////////////////////////////////////////////////////////////////////////////////////
-
-        /*try {
-            const bpmnJson = bpmnModeler.get('canvas').getRootElement().businessObject.$parent;
-            const awsAccountId = bpmnJson.rootElements[0].awsAccountId;
-            const awsAccountRegion = bpmnJson.rootElements[0].awsAccountRegion;
-            const btoc = new BpmnModelOrchestratorTransformation();
-
-            setEncoded(
-                downloadStepFunctionsLink,
-                'AWS_StepFunctions.zip',
-                await btoc.convertJsonToOrchestrator(bpmnJson, new StepFunctionsGenerator(awsAccountId, awsAccountRegion), [new StrictModelValidator()])
-            );
-        } catch (err) {
-            console.error('Error happened saving generated Step Functions workflow definition: ', err);
-            setEncoded(downloadStepFunctionsLink, 'AWS_StepFunctions.zip', null);
-        }
-
-        try {
-            const bpmnJson = bpmnModeler.get('canvas').getRootElement().businessObject.$parent;
-            const btoc = new BpmnModelOrchestratorTransformation();
-
-            setEncoded(
-                downloadDurableFunctionsLink,
-                'Azure_DurableFunctions.zip',
-                await btoc.convertJsonToOrchestrator(bpmnJson, new DurableFunctionsGenerator(), [new StrictModelValidator()])
-            );
-        } catch (err) {
-            console.error('Error happened saving generated Durable Functions workflow definition: ', err);
-            setEncoded(downloadDurableFunctionsLink, 'Azure_DurableFunctions.zip', null);
-        }
-
-        try {
-            const bpmnJson = bpmnModeler.get('canvas').getRootElement().businessObject.$parent;
-            const btoc = new BpmnModelOrchestratorTransformation();
-
-            setEncoded(
-                downloadDurablePythonFunctionsLink,
-                'Azure_DurableFunctionsPython.zip',
-                await btoc.convertJsonToOrchestrator(bpmnJson, new DurableFunctionsPythonGenerator(), [new StrictModelValidator()])
-            );
-        } catch (err) {
-            console.error('Error happened saving generated Durable Functions Python workflow definition: ', err);
-            setEncoded(downloadDurableFunctionsLink, 'Azure_DurableFunctionsPython.zip', null);
-        }
-
-        try {
-            const bpmnJson = bpmnModeler.get('canvas').getRootElement().businessObject.$parent;
-            const btoc = new BpmnModelOrchestratorTransformation();
-
-            setEncoded(
-                downloadOpenWhiskComposerLink,
-                'OpenWhisk_Composer.zip',
-                await btoc.convertJsonToOrchestrator(bpmnJson, new ComposerGenerator(), [new StrictModelValidator()])
-            );
-        } catch (err) {
-            console.error('Error happened saving generated Composer workflow definition: ', err);
-            setEncoded(downloadOpenWhiskComposerLink, 'OpenWhisk_Composer.zip', null);
-        }
-
-        try {
-            const bpmnJson = bpmnModeler.get('canvas').getRootElement().businessObject.$parent;
-            const btoc = new BpmnModelOrchestratorTransformation();
-
-            setEncoded(
-                downloadIBMComposerLink,
-                'IBM_Composer.zip',
-                await btoc.convertJsonToOrchestrator(bpmnJson, new ComposerGenerator(true), [new StrictModelValidator()])
-            );
-        } catch (err) {
-            console.error('Error happened saving generated Composer workflow definition: ', err);
-            setEncoded(downloadIBMComposerLink, 'IBM_Composer.zip', null);
-        }*/
 
     }, 500);
 
