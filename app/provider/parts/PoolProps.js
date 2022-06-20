@@ -1,8 +1,8 @@
 import entryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
-import myEntryFactory from '../../../factory/CustomEntryFactory';
+import myEntryFactory from '../../factory/CustomEntryFactory';
 
-import { CloudProviderConstants } from '../../../constants/CloudProviderConstants';
-import EndpointManager from '../../../utils/EndpointManager';
+import { CloudProviderConstants } from '../../constants/CloudProviderConstants';
+import EndpointManager from '../../utils/EndpointManager';
 
 import { is } from 'bpmn-js/lib/util/ModelUtil';
 

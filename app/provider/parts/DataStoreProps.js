@@ -1,9 +1,9 @@
 import entryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
-import myEntryFactory from '../../../factory/CustomEntryFactory';
+import myEntryFactory from '../../factory/CustomEntryFactory';
 
 import {is} from 'bpmn-js/lib/util/ModelUtil';
 
-import { ServiceTypeConstants } from '../../../constants/ServiceTypeConstants';
+import { ServiceTypeConstants } from '../../constants/ServiceTypeConstants';
 
 
 export default function(group, element, translate) {
@@ -22,13 +22,6 @@ export default function(group, element, translate) {
                             }*/
                             ],
             modelProperty : 'service'
-        }));
-
-        group.entries.push(entryFactory.textField(translate, {
-            id : 'region',
-            description : 'Specify the AWS Account Region',
-            label : 'AWS Account Region',
-            modelProperty : 'region'
         }));
     }
 

@@ -1,5 +1,5 @@
 import entryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
-import myEntryFactory from '../../../../factory/CustomEntryFactory';
+import myEntryFactory from '../../../factory/CustomEntryFactory';
 
 import {is} from 'bpmn-js/lib/util/ModelUtil';
 

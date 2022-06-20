@@ -1,7 +1,7 @@
 import entryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
-import myEntryFactory from '../../../../factory/CustomEntryFactory';
+import myEntryFactory from '../../../factory/CustomEntryFactory';
 
-import { TriggerTypeConstants } from '../../../../constants/TriggerTypeConstants';
+import { TriggerTypeConstants } from '../../../constants/TriggerTypeConstants';
 
 import {is} from 'bpmn-js/lib/util/ModelUtil';
 

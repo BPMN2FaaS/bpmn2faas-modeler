@@ -1,8 +1,8 @@
 import entryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
-import myEntryFactory from '../../../../factory/CustomEntryFactory';
+import myEntryFactory from '../../../factory/CustomEntryFactory';
 
-import { ServiceCallManager } from '../../../../utils/ServiceCallManager';
-import { ServiceTypeConstants } from '../../../../constants/ServiceTypeConstants';
+import { ServiceCallManager } from '../../../utils/ServiceCallManager';
+import { ServiceTypeConstants } from '../../../constants/ServiceTypeConstants';
 import { getArgs, createLoopProps } from './TaskProps'
 
 import { is } from 'bpmn-js/lib/util/ModelUtil';
