@@ -61,7 +61,7 @@ function registerFileDrop(container) {
         if (!zipReceived) {
             var files = e.dataTransfer.files;
             var file = files[0];
-            if (file.type === 'application/zip') {
+            if (file.type === 'application/zip' || file.type === 'application/x-zip-compressed') {
                 var progressBar = $("progress");
                 progressBar.attr('value', 0.5);
 
